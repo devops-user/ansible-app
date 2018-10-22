@@ -1,0 +1,2 @@
+[web]
+xsavitsky.devops.srwx.net ansible_ssh_user=root
