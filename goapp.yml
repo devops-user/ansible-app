@@ -1,0 +1,6 @@
+---
+- hosts: web
+  roles:
+   - nginx
+   - php-fpm
+   - letsencrypt
