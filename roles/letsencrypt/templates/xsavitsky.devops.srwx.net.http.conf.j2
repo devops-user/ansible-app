@@ -1,0 +1,13 @@
+server {
+	listen 80;
+
+	server_name xsavitsky.devops.srwx.net;
+
+	location / {
+		return 301 https://xsavitsky.devops.srwx.net$request_uri;
+	}
+
+	location /.well-know/acme {
+		root /opt/acme;
+	}
+}

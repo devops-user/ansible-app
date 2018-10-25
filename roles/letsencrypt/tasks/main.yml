@@ -1,0 +1,30 @@
+---
+  - name: Installing letsencrypt
+    apt: allow_unauthenticated=yes name=letsencrypt state=present
+
+  - name: Create folder for SSL
+    file: path=/opt/acme state=directory
+
+  - name: Create site {{ domain_name }} http
+    template: src={{ domain_name }}.http.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.http.conf owner=root group=root mode=0644
+    notify: restart nginx
+
+  - name: Receiving SSL certificate letsencrypt
+    shell: letsencrypt certonly --non-interactive --agree-tos --webroot -w /opt/acme -d {{ domain_name }} --email {{ email_address }}
+    args:
+     creates: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+
+  - name: Create site {{ domain_name }} https
+    template: src={{ domain_name }}.https.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.https.conf owner=root group=root mode=0644
+    notify: restart nginx
+
+  - name: Setting cron task for certificate renew
+    cron:
+     name: Letsencrypt renew certificate
+     job: "letsencrypt renew && service nginx reload"
+     state: permanent
+     user: root
+     hour: "*/12"
+
+  - name: Deploy goapp-web
+    git: repo=/https://github.com/devops-user/goapp-web dest=/srv/goapp-web
