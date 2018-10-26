@@ -6,7 +6,7 @@
     file: path=/opt/acme state=directory
 
   - name: Create site {{ domain_name }} http
-    template: src={{ domain_name }}.http.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.http.conf owner=root group=root mode=0644
+    template: src=site.http.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.http.conf owner=root group=root mode=0644
     notify: restart nginx
   - meta: flush_handlers
 
@@ -16,8 +16,9 @@
      creates: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
 
   - name: Create site {{ domain_name }} https
-    template: src={{ domain_name }}.https.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.https.conf owner=root group=root mode=0644
-    notify: restart nginx
+    template: src=site.https.conf.j2 dest=/etc/nginx/sites-enabled/{{ domain_name }}.https.conf owner=root group=root mode=0644
+    notify: restart nginxш
+  - meta: flush_handlers
 
   - name: Setting cron task for certificate renew
     cron:
