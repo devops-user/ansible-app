@@ -1,0 +1,11 @@
+---
+- hosts: web
+  vars:
+    - domain_name: xsavitsky.devops.srwx.net
+  roles:
+   - nginx
+   - php-fpm
+   - letsencrypt
+   - api-web
+   - api-calc-sum
+   - api-calc-diff

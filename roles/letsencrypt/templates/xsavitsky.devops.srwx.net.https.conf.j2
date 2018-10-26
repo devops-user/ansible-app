@@ -2,8 +2,8 @@ server {
 
 	listen 443 ssl;
 
-	ssl_certificate /etc/letsencrypt/live/xsavitsky.devops.srwx.net/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/xsavitsky.devops.srwx.net/private.key;
+	ssl_certificate /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
 
 	location / {
 		root /srv/goapp-web;
@@ -14,8 +14,8 @@ server {
 	}
 
 	location /api-diff {
-	include_fastcgi_params;
+	include fastcgi_params;
 	fastcgi_param SCRIPT_FILENAME /srv/goapp-php/index.php;
-	fastcgi_pass unix://var/run/php/php7.0-fpm.sock;
+	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
 	}
 }

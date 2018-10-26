@@ -1,0 +1,8 @@
+---
+ - name: Installing git
+   apt: name=git state=present
+
+ - name: Deploy goapp-web
+   git: 
+     repo: https://github.com/devops-user/goapp-web 
+     dest: /srv/goapp-web
